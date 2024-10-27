@@ -1,5 +1,6 @@
 package com.example.weather.providers
 
+import Weather
 import io.ktor.client.*
 import io.ktor.server.application.*
 
@@ -14,7 +15,7 @@ import kotlinx.serialization.json.Json
 val API_KEY = "QuOCBZGUTS8jGXtwEunWUgjNnyRLfDCA"
 val BASE_URL = "https://api.tomorrow.io/v4/weather"
 
-suspend fun getCityWeather(cityName: String): WeatherResponse? {
+suspend fun getCityWeather(cityName: String): Weather? {
     val city = cityName.lowercase()
     val client = HttpClient(CIO)
     return try {
@@ -25,7 +26,13 @@ suspend fun getCityWeather(cityName: String): WeatherResponse? {
             ignoreUnknownKeys = true
             coerceInputValues = true
         }
-        json.decodeFromString<WeatherResponse>(responseBody)
+        val data = json.decodeFromString<WeatherResponse>(responseBody)
+        val temperature = data.data.values.temperature
+        val name = data.location.name
+        Weather(
+            cityName = name,
+            temperature = temperature!!
+        )
 
     } catch (e: Exception) {
         println(e)
@@ -34,18 +41,4 @@ suspend fun getCityWeather(cityName: String): WeatherResponse? {
         client.close()
     }
 
-}
-//todo: this is an updater would be a file
-//todo: look for each cityArray
-//[sydney, santiago, auckland, zürich, london, atlanta]
-fun Application.configureClient() {
-    async {
-        val weather = getCityWeather("london")
-        weather?.let { response ->
-            println("response: $response")
-            println("Temperatura: ${response.data.values.temperature}°C")
-            println("Ubicación: ${response.location.name}")
-
-        } ?: println("No se pudo obtener el clima")
-    }
 }
