@@ -35,13 +35,17 @@ suspend fun getCityWeather(cityName: String): WeatherResponse? {
     }
 
 }
-
+//todo: this is an updater would be a file
+//todo: look for each cityArray
+//[sydney, santiago, auckland, zürich, london, atlanta]
 fun Application.configureClient() {
     async {
-        val weather = getCityWeather("toronto")
+        val weather = getCityWeather("london")
         weather?.let { response ->
+            println("response: $response")
             println("Temperatura: ${response.data.values.temperature}°C")
             println("Ubicación: ${response.location.name}")
+
         } ?: println("No se pudo obtener el clima")
     }
 }
