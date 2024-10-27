@@ -12,7 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.serialization.json.Json
 
 //TODO: improve in .env file a its configuration
-val API_KEY = "QuOCBZGUTS8jGXtwEunWUgjNnyRLfDCA"
+val API_KEY = "GP5qIJR1vE7CdMymOJoJQQeJBewEiwVN"
 val BASE_URL = "https://api.tomorrow.io/v4/weather"
 
 suspend fun getCityWeather(cityName: String): Weather? {
@@ -35,6 +35,7 @@ suspend fun getCityWeather(cityName: String): Weather? {
         )
 
     } catch (e: Exception) {
+        println("error in api")
         println(e)
         null
     } finally {
