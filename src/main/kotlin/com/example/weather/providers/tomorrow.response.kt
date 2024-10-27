@@ -1,4 +1,4 @@
-package com.example.config
+package com.example.weather.providers
 import kotlinx.serialization.Serializable
 
 @Serializable

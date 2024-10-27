@@ -1,18 +1,14 @@
-package com.example.config
+package com.example.weather.providers
 
 import io.ktor.client.*
 import io.ktor.server.application.*
 
-import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.http.ContentType.Application.Json
 import kotlinx.coroutines.async
 
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
 
 //TODO: improve in .env file a its configuration
 val API_KEY = "QuOCBZGUTS8jGXtwEunWUgjNnyRLfDCA"
@@ -23,7 +19,7 @@ suspend fun getCityWeather(cityName: String): WeatherResponse? {
     val client = HttpClient(CIO)
     return try {
         val response: HttpResponse =
-            client.get("${BASE_URL}/realtime?location=${city}&apikey=${API_KEY}")
+            client.get("$BASE_URL/realtime?location=${city}&apikey=$API_KEY")
         val responseBody = response.bodyAsText()
         val json = Json {
             ignoreUnknownKeys = true

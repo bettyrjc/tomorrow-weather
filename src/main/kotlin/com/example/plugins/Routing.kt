@@ -1,9 +1,10 @@
 package com.example.plugins
 
+import com.example.weather.data.RedisWeatherRepository
+
 import io.github.smiley4.ktorswaggerui.SwaggerUI
 import io.ktor.http.*
 import io.ktor.resources.*
-import io.ktor.server.application.*
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.*
@@ -13,6 +14,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.webjars.*
 import kotlinx.serialization.Serializable
+
 
 fun Application.configureRouting() {
     install(Webjars) {
@@ -39,6 +41,10 @@ fun Application.configureRouting() {
             call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
         }
     }
+    //init client
+    val client = RedisWeatherRepository()
+
+
     routing {
         get("/") {
             call.respondText("Hello World!")
@@ -46,6 +52,8 @@ fun Application.configureRouting() {
         get("/webjars") {
             call.respondText("<script src='/webjars/jquery/jquery.js'></script>", ContentType.Text.Html)
         }
+
+
         get<Articles> { article ->
             // Get all articles ...
             call.respond("List of articles sorted starting from ${article.sort}")

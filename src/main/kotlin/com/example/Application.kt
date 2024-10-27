@@ -1,7 +1,8 @@
 package com.example
 
 import com.example.plugins.*
-import com.example.config.*
+import com.example.weather.providers.*
+import com.example.weather.providers.configureClient
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
