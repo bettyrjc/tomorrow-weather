@@ -39,6 +39,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
     implementation("io.lettuce:lettuce-core:6.3.2.RELEASE")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.2")
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

@@ -11,10 +11,18 @@ import io.ktor.client.statement.*
 import kotlinx.coroutines.async
 
 import kotlinx.serialization.json.Json
+import io.github.cdimascio.dotenv.dotenv
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 
-//TODO: improve in .env file a its configuration
-val API_KEY = "GP5qIJR1vE7CdMymOJoJQQeJBewEiwVN"
-val BASE_URL = "https://api.tomorrow.io/v4/weather"
+val dotenv = dotenv {
+    filename = ".env"
+    ignoreIfMissing = true
+}
+const val BASE_URL = "https://api.tomorrow.io/v4/weather"
+val API_KEY = dotenv["SECRET_API_KEY"]
+
 
 val Cities = hashMapOf(
     CityName.SANTIAGO.city to "santiago chile",
@@ -24,7 +32,7 @@ val Cities = hashMapOf(
     CityName.LONDON.city to "london UK",
     CityName.GEORGIA.city to "georgia USA",
 
-)
+    )
 
 suspend fun getCityWeather(cityName: String): Weather? {
     val city = Cities[cityName] ?: throw Exception("Invalid city name.") //TODO: use custom error
