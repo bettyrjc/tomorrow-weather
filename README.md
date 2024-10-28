@@ -24,4 +24,4 @@ Before use this repository you need to have installed redis on your machine
 - [ ] Add test
 - [ ] Config docker
 - [ ] Add openAPI
-
+- [ ] Implement something like fakerJs for kotlin
