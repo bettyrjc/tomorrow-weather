@@ -22,6 +22,7 @@ class ApplicationTest {
     @Test
     fun shouldReturnNotFoundCity() = testApplication {
         application { configureRouting() }
+
         client.get("/weather?cityName=Santiagos").apply {
             assertEquals(HttpStatusCode.NotFound, status)
             assertEquals("{\"message\":\"Weather not found\",\"statusCode\":404}", bodyAsText())
@@ -40,9 +41,10 @@ class ApplicationTest {
     @Test
     fun shouldReturnWeather() = testApplication {
         application { configureRouting() }
-        client.get("/weather?cityName=Santiago").apply {
+        val cityName = CityName.SANTIAGO.city
+        client.get("/weather?cityName=${cityName}").apply {
             assertEquals(HttpStatusCode.OK, status)
-            assertEquals("{\"cityName\":\"Santiago\",\"temperature\":12.1}", bodyAsText())
+            assertEquals("{\"cityName\":\"Santiago (CL)\",\"temperature\":29.0}", bodyAsText())
         }
     }
 }
