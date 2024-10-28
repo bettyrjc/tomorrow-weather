@@ -14,11 +14,11 @@ class RedisWeatherRepository : WeatherRepository {
 
     override fun save(weather: Weather) {
         val weatherAsString: String = encodeToString(Weather.serializer(), weather)
-       redisCommands.set(weather.cityName, weatherAsString).get()
+       redisCommands.set(weather.cityName.lowercase(), weatherAsString).get()
     }
 
     override fun find(cityName: String): Weather {
-        val weatherAsString = redisCommands.get(cityName).get() ?: throw NotFoundException("Weather not found")
+        val weatherAsString = redisCommands.get(cityName.lowercase()).get() ?: throw NotFoundException("Weather not found")
         return Json.decodeFromString<Weather>(weatherAsString)
     }
 }
