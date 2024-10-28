@@ -12,9 +12,10 @@ Before use this repository you need to have installed redis on your machine
 
 ## Setup project
 1. `git clone https://github.com/bettyrjc/combat-pokemon.git`
-2. Build the project: `./gradle build`
-3. run in your local redis
-4. Run the project: `./gradle run`
+2. create .env file a put your tomorrow.io API KEY, see example in .env.example
+3. Build the project: `./gradle build`
+4. run in your local redis
+5. Run the project: `./gradle run`
 
 ## API Interactions
 
