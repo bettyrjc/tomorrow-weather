@@ -36,7 +36,7 @@ curl "http://localhost:8080/weather?cityName=Santiago (CL)"
 
 
 ## Improvements
-- [ ] Add test
+- [x] Add test
 - [ ] Config docker
 - [ ] Add openAPI
 - [ ] Implement something like fakerJs for kotlin
