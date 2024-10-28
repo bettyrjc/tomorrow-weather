@@ -18,8 +18,8 @@ class RedisWeatherRepository : WeatherRepository {
     }
 
     override fun find(cityName: String): Weather {
-        val weatherAsString = redisCommands.get(cityName).get()
-        if (weatherAsString.isEmpty()) throw NotFoundException("Weather not found")
+//        this.save(Weather(cityName, 12.1))
+        val weatherAsString = redisCommands.get(cityName).get() ?: throw NotFoundException("Weather not found")
         return Json.decodeFromString<Weather>(weatherAsString)
     }
 }

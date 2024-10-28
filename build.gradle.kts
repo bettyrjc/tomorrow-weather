@@ -35,7 +35,8 @@ dependencies {
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-
+    implementation("io.ktor:ktor-server-content-negotiation:2.0.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
     implementation("io.lettuce:lettuce-core:6.3.2.RELEASE")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 

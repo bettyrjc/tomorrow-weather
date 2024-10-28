@@ -8,17 +8,25 @@ import io.ktor.resources.*
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.resources.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.webjars.*
 import kotlinx.serialization.Serializable
+import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.plugins.*
 
+@Serializable
+class HttpError(val message: String?, val statusCode: Int?)
 
 fun Application.configureRouting() {
     install(Webjars) {
         path = "/webjars" //defaults to /webjars
+    }
+    install(ContentNegotiation) {
+        json()
     }
     install(SwaggerUI) {
         swagger {
@@ -41,9 +49,8 @@ fun Application.configureRouting() {
             call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
         }
     }
-    //init client
-    val client = RedisWeatherRepository()
 
+    val redisClient = RedisWeatherRepository()
 
     routing {
         get("/") {
@@ -52,15 +59,23 @@ fun Application.configureRouting() {
         get("/webjars") {
             call.respondText("<script src='/webjars/jquery/jquery.js'></script>", ContentType.Text.Html)
         }
-
-
-        get<Articles> { article ->
-            // Get all articles ...
-            call.respond("List of articles sorted starting from ${article.sort}")
+        get("/weather") {
+            val cityName: String? = call.parameters["cityName"]
+            if (cityName == null) {
+                val error = HttpError("\"cityName\" is required", HttpStatusCode.PreconditionFailed.value)
+                call.response.status(HttpStatusCode.PreconditionFailed)
+                call.respond(error)
+                return@get
+            }
+            try {
+                val weather = redisClient.find(cityName)
+                call.respond(weather)
+            } catch (e: NotFoundException) {
+                val error = HttpError(e.message, HttpStatusCode.NotFound.value)
+                call.response.status(HttpStatusCode.NotFound)
+                call.respond(error)
+            }
         }
     }
 }
 
-@Serializable
-@Resource("/articles")
-class Articles(val sort: String? = "new")
