@@ -30,6 +30,7 @@ suspend fun getCityWeather(cityName: String): Weather? {
     val city = Cities[cityName] ?: throw Exception("Invalid city name.") //TODO: use custom error
     val client = HttpClient(CIO)
     return try {
+        if (Math.random() < 0.2) throw Exception("The API Request Failed")
         val response: HttpResponse =
             client.get("$BASE_URL/realtime") {
                 url {

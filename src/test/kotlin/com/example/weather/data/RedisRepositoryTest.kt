@@ -1,11 +1,12 @@
 package com.example.weather.data
 
+import CityName
 import Weather
 import junit.framework.TestCase.assertEquals
 import kotlin.test.Test
 
 val weather = Weather(
-    "Santiago", // TODO: Implement something like fakerJs for kotlin
+    CityName.SANTIAGO.city, // TODO: Implement something like fakerJs for kotlin
     29.0
 )
 

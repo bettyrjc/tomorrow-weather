@@ -1,7 +1,7 @@
 package com.example
 
 import com.example.plugins.*
-import com.example.weather.providers.configureClient
+import com.example.plugins.configureTimer
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -15,5 +15,5 @@ fun main() {
 fun Application.module() {
     configureHTTP()
     configureRouting()
-    configureClient()
+    configureTimer()
 }
