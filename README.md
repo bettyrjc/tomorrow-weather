@@ -16,7 +16,21 @@ Before use this repository you need to have installed redis on your machine
 3. run in your local redis
 4. Run the project: `./gradle run`
 
-## Project structure
+## API Interactions
+
+### Get weather
+
+Currently, we only support the next cities:
+- Santiago (CL)
+- Zúrich (CH)
+- Auckland (NZ)
+- Sídney (AU)
+- Londres (UK)
+- Georgia (USA)
+
+```bash
+curl "http://localhost:8080/weather?cityName=Santiago (CL)"
+```
 
 
 

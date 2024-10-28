@@ -1,5 +1,6 @@
 package com.example.weather.providers
 
+import CityName
 import Weather
 import io.ktor.client.*
 import io.ktor.server.application.*
@@ -15,12 +16,27 @@ import kotlinx.serialization.json.Json
 val API_KEY = "GP5qIJR1vE7CdMymOJoJQQeJBewEiwVN"
 val BASE_URL = "https://api.tomorrow.io/v4/weather"
 
+val Cities = hashMapOf(
+    CityName.SANTIAGO.city to "santiago chile",
+    CityName.ZURICH.city to "zurich Schweiz",
+    CityName.AUCKLAND.city to "auckland new zealand",
+    CityName.SIDNEY.city to "sidney australia",
+    CityName.LONDON.city to "london UK",
+    CityName.GEORGIA.city to "georgia USA",
+
+)
+
 suspend fun getCityWeather(cityName: String): Weather? {
-    val city = cityName.lowercase()
+    val city = Cities[cityName] ?: throw Exception("Invalid city name.") //TODO: use custom error
     val client = HttpClient(CIO)
     return try {
         val response: HttpResponse =
-            client.get("$BASE_URL/realtime?location=${city}&apikey=$API_KEY")
+            client.get("$BASE_URL/realtime") {
+                url {
+                    parameters.append("location", city)
+                    parameters.append("apikey", API_KEY)
+                }
+            }
         val responseBody = response.bodyAsText()
         val json = Json {
             ignoreUnknownKeys = true
@@ -28,10 +44,9 @@ suspend fun getCityWeather(cityName: String): Weather? {
         }
         val data = json.decodeFromString<WeatherResponse>(responseBody)
         val temperature = data.data.values.temperature
-        val name = data.location.name
         Weather(
-            cityName = name,
-            temperature = temperature!!
+            cityName = cityName,
+            temperature = temperature
         )
 
     } catch (e: Exception) {
